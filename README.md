@@ -9,7 +9,7 @@ Play directly in your browser — no installation needed.
 
 ## 🔗 Demo Link
 
-👉 [立即遊玩 WebGomoku](https://<honeycream0903>.github.io/WebGomoku/main.html)
+👉 [立即遊玩 WebGomoku](https://<honeycream0903>.github.io/WebGomoku/)
 
 ## 🎮 遊戲玩法
 
