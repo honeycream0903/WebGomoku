@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+
+<!-- Fig. 2.13: table2.html -->
+<!-- Complex HTML5 table. -->
+<html>
+   <head>
+     <meta charset = "utf-8">
+     <title>Ultimate tic tac toe</title>
+	  <style type="text/css">
+	  .rule{position:absolute;
+	        left:615px;}
+	  .table{position:absolute;
+	        top:110px;
+			left:100px;
+			bottom:50;} 
+	 .hint{position:absolute;
+	        top:700px;
+			left:650px;}
+	 .button-area{position: absolute;
+  			top: 550px;
+  			left: 670px;
+  			display: flex;
+  			gap: 10px;}
+  	 .button-area img {
+  			width: 100px;
+  			height: auto;
+  			cursor: pointer;}
+	 .dino{position:absolute;
+	      top:500px;
+			left:1000px;
+			width: 170px;
+    		height: auto;}
+
+    img{
+  			width: 40px;
+  			height: 40px;
+  			object-fit: contain;}
+
+
+    td{
+    		width: 34px;     
+    		height: 34px;
+    		padding: 0;
+    		text-align: center;
+    		vertical-align: middle;
+    		overflow: hidden;}
+	  </style>
+
+    <script>
+			alreadyT=[];
+			lined=[];
+		    a=[];
+			for(var c=0;c<=9;c++){lined[c]=0;}
+			for(var b=0;b<=81;b++){
+			alreadyT[b]=0;
+		    a[b]=0;
+			}
+			var undoo=0;
+			var idd;
+			var nowplay=1;
+			var lastT=0;
+			
+			
+function touch(event) {
+  idd = event.target;
+
+  for (var i = 1; i <= 81; i++) {
+    if (idd == a[i]) {
+      let currentTable = Math.floor((i - 1) / 9) + 1;
+      let cellInTable = ((i - 1) % 9) + 1;
+      let nextTable = cellInTable;
+
+      if (lastT == 0) {
+        alreadyT[i] = nowplay;
+        a[i].setAttribute("src", nowplay + ".jpg");
+        a[i].setAttribute("alt", nowplay + " spot(s)");
+        line();
+        bigline();
+        nowplay = 2 - (nowplay + 1) % 2;
+        lastT = i;
+        undoo = 1;
+
+        document.getElementById("hint").innerHTML =
+          "🎯 You just played in <b>Table #" + currentTable + "</b>, Cell #" + cellInTable +
+          "<br>🎯 Now opponent must play in <b>Table #" + nextTable + "</b> (↘ top-left to bottom-right)";
+      }
+
+      else if (lined[(lastT - 1) % 9 + 1] == 0) {
+        if (Math.floor((i - 1) / 9) + 1 == (lastT - 1) % 9 + 1 && alreadyT[i] == 0) {
+          alreadyT[i] = nowplay;
+          a[i].setAttribute("src", nowplay + ".jpg");
+          a[i].setAttribute("alt", nowplay + " spot(s)");
+          line();
+          bigline();
+          nowplay = 2 - (nowplay + 1) % 2;
+          lastT = i;
+          undoo = 1;
+
+          document.getElementById("hint").innerHTML =
+            "🎯 You just played in <b>Table #" + currentTable + "</b>, Cell #" + cellInTable +
+            "<br>🎯 Now opponent must play in <b>Table #" + nextTable + "</b> (↘ top-left to bottom-right)";
+        } else {
+          let lastTable = Math.floor((lastT - 1) / 9) + 1;
+          let lastCell = ((lastT - 1) % 9) + 1;
+          let nextTable = lastCell;
+
+          window.alert(
+            "🎯 You just played in Table #" + lastTable + ", Cell #" + lastCell +
+            "\n🎯 Now opponent must play in Table #" + nextTable + " (↘ top-left to bottom-right)"
+          );
+        }
+      }
+
+      else if (alreadyT[i] == 0 && lined[(lastT - 1) % 9 + 1] != 0) {
+        alreadyT[i] = nowplay;
+        a[i].setAttribute("src", nowplay + ".jpg");
+        a[i].setAttribute("alt", nowplay + " spot(s)");
+        line();
+        bigline();
+        nowplay = 2 - (nowplay + 1) % 2;
+        lastT = i;
+        undoo = 1;
+
+        document.getElementById("hint").innerHTML =
+          "🎯 You just played in <b>Table #" + currentTable + "</b>, Cell #" + cellInTable +
+          "<br>🎯 Now opponent must play in <b>Table #" + nextTable + "</b> (↘ top-left to bottom-right)";
+      }
+    }
+  }
+}
+
+
+			function line()
+			{  for(var i=1;i<=81;i++){
+			if(i%3==1){
+					if(alreadyT[i]==nowplay&&alreadyT[i+1]==nowplay&&alreadyT[i+2]==nowplay){
+					lined[(i-i%9)/9+1]=nowplay;
+					for(var j=(((i-i%9)/9+1)-1)*9+1;j<=(((i-i%9)/9+1)-1)*9+9;j++){
+					a[i].setAttribute("src", nowplay + ".jpg");
+					a[j].setAttribute( "alt", nowplay);}
+			
+			}}
+			if(i%9==1||i%9==2||i%9==3){
+					if(alreadyT[i]==nowplay&&alreadyT[i+3]==nowplay&&alreadyT[i+6]==nowplay){
+					lined[(i-i%9)/9+1]=nowplay;
+					for(var j=(((i-i%9)/9+1)-1)*9+1;j<=(((i-i%9)/9+1)-1)*9+9;j++){
+					a[i].setAttribute("src", nowplay + ".jpg");
+					a[j].setAttribute( "alt", nowplay);}
+			}}
+			if(i%9==1||i%9==3){
+					if(alreadyT[i]==nowplay&&alreadyT[(5-i%9)+i]==nowplay&&alreadyT[(10-i%9-i%9)+i]==nowplay){
+					lined[(i-i%9)/9+1]=nowplay;
+					for(var j=(((i-i%9)/9+1)-1)*9+1;j<=(((i-i%9)/9+1)-1)*9+9;j++){
+					a[i].setAttribute("src", nowplay + ".jpg");
+					a[j].setAttribute( "alt", nowplay);}
+			}}}
+			}
+
+
+			function bigline()
+			{ var nowplayy=nowplay; 
+			for(var i=1;i<=9;i++){
+			if(i%3==1){
+					if(lined[i]==nowplayy&&lined[i+1]==nowplayy&&lined[i+2]==nowplayy){
+					
+					window.alert(nowplayy+" player You win");
+			
+			}}
+			if(i==1||i==2||i==3){
+					if(lined[i]==nowplayy&&lined[i+3]==nowplayy&&lined[i+6]==nowplayy){
+					window.alert(nowplayy+" player You win");
+			}}
+			if(i==1||i==3){
+					if(lined[i]==nowplayy&&lined[5]==nowplayy&&lined[10-i]==nowplayy){
+					window.alert(nowplayy+" player You win");
+			}}
+			}}
+			
+
+			function undo(){
+			  if(undoo==1){
+			    a[lastT].setAttribute( "src", "blank.png" );
+				a[lastT].setAttribute( "alt", "blank"); 
+				lastT=(lastT+9-lastT%9)/9;undoo=0;nowplay=2-(nowplay+1)%2;}
+				
+				else window.alert(" you can only undo once");}
+				
+				
+			function AItry(){
+			var nowAI =((lastT-1)%9)*9+Math.floor( 1+Math.random()*8);
+			if(lined[(lastT-1)%9+1]!=0){ 
+			nowAI =Math.floor( Math.random()*8)*9+Math.floor( 1+Math.random()*8);
+			if(lined[(nowAI-1)%9+1]!=0){AItry();}
+			else if(alreadyT[nowAI]==0){	alreadyT[nowAI]=nowplay;
+            a[nowAI].setAttribute("src", nowplay + ".jpg");
+            a[nowAI].setAttribute( "alt", nowplay+ " spot(s)" );
+			line();			 
+			bigline();
+			nowplay=2-(nowplay+1)%2;
+			lastT=nowAI;
+			undoo=1;
+			let currentTable = Math.floor((lastT - 1) / 9) + 1;
+			let cellInTable = ((lastT - 1) % 9) + 1;
+			let nextTable = cellInTable;
+			document.getElementById("hint").innerHTML = "🎯 You just played in <b>Table #" + currentTable + "</b>, Cell #" + cellInTable +
+  			"<br>🎯 Now opponent must play in <b>Table #" + nextTable + "</b> (↘ top-left to bottom-right)";}
+			}
+			else if(alreadyT[nowAI]==0){
+			 	alreadyT[nowAI]=nowplay;
+            a[nowAI].setAttribute("src", nowplay + ".jpg");
+            a[nowAI].setAttribute( "alt", nowplay+ " spot(s)" );
+			line();			 
+			bigline();
+			nowplay=2-(nowplay+1)%2;
+			lastT=nowAI;
+			undoo=1;
+			document.getElementById("hint").innerHTML = "🎯 You just played in <b>Table #" + currentTable + "</b>, Cell #" + cellInTable +
+  			"<br>🎯 Now opponent must play in <b>Table #" + nextTable + "</b> (↘ top-left to bottom-right)";}
+			else  {AItry(); }
+			}
+			
+
+			function start(){
+			a[1] = document.getElementById( "a1" );
+            a[1].addEventListener( "click", touch, false );
+			a[2] = document.getElementById( "a2" );
+            a[2].addEventListener( "click", touch, false );
+			a[3] = document.getElementById( "a3" );
+            a[3].addEventListener( "click", touch, false );
+			a[4] = document.getElementById( "a4" );
+            a[4].addEventListener( "click", touch, false );
+			a[5] = document.getElementById( "a5" );
+            a[5].addEventListener( "click", touch, false );
+			a[6] = document.getElementById( "a6" );
+            a[6].addEventListener( "click", touch, false );
+			a[7] = document.getElementById( "a7" );
+            a[7].addEventListener( "click", touch, false );
+			a[8] = document.getElementById( "a8" );
+            a[8].addEventListener( "click", touch, false );
+			a[9] = document.getElementById( "a9" );
+            a[9].addEventListener( "click", touch, false );
+			a[10] = document.getElementById( "b1" );
+            a[10].addEventListener( "click", touch, false );
+			a[11] = document.getElementById( "b2" );
+            a[11].addEventListener( "click", touch, false );
+			a[12] = document.getElementById( "b3" );
+            a[12].addEventListener( "click", touch, false );
+			a[13] = document.getElementById( "b4" );
+            a[13].addEventListener( "click", touch, false );
+			a[14] = document.getElementById( "b5" );
+            a[14].addEventListener( "click", touch, false );
+			a[15] = document.getElementById( "b6" );
+            a[15].addEventListener( "click", touch, false );
+			a[16] = document.getElementById( "b7" );
+            a[16].addEventListener( "click", touch, false );
+			a[17] = document.getElementById( "b8" );
+            a[17].addEventListener( "click", touch, false );
+			a[18] = document.getElementById( "b9" );
+            a[18].addEventListener( "click", touch, false );
+            a[19] = document.getElementById( "c1" );
+            a[19].addEventListener( "click", touch, false );
+			a[20] = document.getElementById( "c2" );
+            a[20].addEventListener( "click", touch, false );
+			 a[21] = document.getElementById( "c3" );
+            a[21].addEventListener( "click", touch, false );
+			 a[22] = document.getElementById( "c4" );
+            a[22].addEventListener( "click", touch, false );
+			 a[23] = document.getElementById( "c5" );
+            a[23].addEventListener( "click", touch, false );
+			 a[24] = document.getElementById( "c6" );
+            a[24].addEventListener( "click", touch, false );
+			 a[25] = document.getElementById( "c7" );
+            a[25].addEventListener( "click", touch, false );
+			 a[26] = document.getElementById( "c8" );
+            a[26].addEventListener( "click", touch, false );
+			 a[27] = document.getElementById( "c9" );
+            a[27].addEventListener( "click", touch, false );
+			 a[28] = document.getElementById( "d1" );
+            a[28].addEventListener( "click", touch, false );
+			 a[29] = document.getElementById( "d2" );
+            a[29].addEventListener( "click", touch, false );
+			 a[30] = document.getElementById( "d3" );
+            a[30].addEventListener( "click", touch, false );
+			 a[31] = document.getElementById( "d4" );
+            a[31].addEventListener( "click", touch, false );
+			 a[32] = document.getElementById( "d5" );
+            a[32].addEventListener( "click", touch, false );
+			 a[33] = document.getElementById( "d6" );
+            a[33].addEventListener( "click", touch, false );
+			 a[34] = document.getElementById( "d7" );
+            a[34].addEventListener( "click", touch, false );
+			 a[35] = document.getElementById( "d8" );
+            a[35].addEventListener( "click", touch, false );
+			 a[36] = document.getElementById( "d9" );
+            a[36].addEventListener( "click", touch, false );
+			 a[37] = document.getElementById( "e1" );
+            a[37].addEventListener( "click", touch, false );
+			 a[38] = document.getElementById( "e2" );
+            a[38].addEventListener( "click", touch, false );
+			 a[39] = document.getElementById( "e3" );
+            a[39].addEventListener( "click", touch, false );
+			 a[40] = document.getElementById( "e4" );
+            a[40].addEventListener( "click", touch, false );
+			 a[41] = document.getElementById( "e5" );
+            a[41].addEventListener( "click", touch, false );
+			 a[42] = document.getElementById( "e6" );
+            a[42].addEventListener( "click", touch, false );
+			 a[43] = document.getElementById( "e7" );
+            a[43].addEventListener( "click", touch, false );
+			 a[44] = document.getElementById( "e8" );
+            a[44].addEventListener( "click", touch, false );
+			 a[45] = document.getElementById( "e9" );
+            a[45].addEventListener( "click", touch, false );
+			 a[46] = document.getElementById( "f1" );
+            a[46].addEventListener( "click", touch, false );
+			 a[47] = document.getElementById( "f2" );
+            a[47].addEventListener( "click", touch, false );
+			 a[48] = document.getElementById( "f3" );
+            a[48].addEventListener( "click", touch, false );
+			 a[49] = document.getElementById( "f4" );
+            a[49].addEventListener( "click", touch, false );
+			 a[50] = document.getElementById( "f5" );
+            a[50].addEventListener( "click", touch, false );
+			 a[51] = document.getElementById( "f6" );
+            a[51].addEventListener( "click", touch, false );
+			 a[52] = document.getElementById( "f7" );
+            a[52].addEventListener( "click", touch, false );
+			 a[53] = document.getElementById( "f8" );
+            a[53].addEventListener( "click", touch, false );
+			 a[54] = document.getElementById( "f9" );
+            a[54].addEventListener( "click", touch, false );
+			 a[55] = document.getElementById( "g1" );
+            a[55].addEventListener( "click", touch, false );
+			 a[56] = document.getElementById( "g2" );
+            a[56].addEventListener( "click", touch, false );
+			 a[57] = document.getElementById( "g3" );
+            a[57].addEventListener( "click", touch, false );
+			 a[58] = document.getElementById( "g4" );
+            a[58].addEventListener( "click", touch, false );
+			 a[59] = document.getElementById( "g5" );
+            a[59].addEventListener( "click", touch, false );
+			 a[60] = document.getElementById( "g6" );
+            a[60].addEventListener( "click", touch, false );
+			 a[61] = document.getElementById( "g7" );
+            a[61].addEventListener( "click", touch, false );
+			 a[62] = document.getElementById( "g8" );
+            a[62].addEventListener( "click", touch, false );
+			 a[63] = document.getElementById( "g9" );
+            a[63].addEventListener( "click", touch, false );
+			 a[64] = document.getElementById( "h1" );
+            a[64].addEventListener( "click", touch, false );
+			 a[65] = document.getElementById( "h2" );
+            a[65].addEventListener( "click", touch, false );
+			 a[66] = document.getElementById( "h3" );
+            a[66].addEventListener( "click", touch, false );
+			 a[67] = document.getElementById( "h4" );
+            a[67].addEventListener( "click", touch, false );
+			 a[68] = document.getElementById( "h5" );
+            a[68].addEventListener( "click", touch, false );
+			 a[69] = document.getElementById( "h6" );
+            a[69].addEventListener( "click", touch, false );
+			 a[70] = document.getElementById( "h7" );
+            a[70].addEventListener( "click", touch, false );
+			 a[71] = document.getElementById( "h8" );
+            a[71].addEventListener( "click", touch, false );
+			 a[72] = document.getElementById( "h9" );
+            a[72].addEventListener( "click", touch, false );
+			 a[73] = document.getElementById( "i1" );
+            a[73].addEventListener( "click", touch, false );
+			 a[74] = document.getElementById( "i2" );
+            a[74].addEventListener( "click", touch, false );
+			 a[75] = document.getElementById( "i3" );
+            a[75].addEventListener( "click", touch, false );
+			 a[76] = document.getElementById( "i4" );
+            a[76].addEventListener( "click", touch, false );
+			 a[77] = document.getElementById( "i5" );
+            a[77].addEventListener( "click", touch, false );
+			 a[78] = document.getElementById( "i6" );
+            a[78].addEventListener( "click", touch, false );
+			 a[79] = document.getElementById( "i7" );
+            a[79].addEventListener( "click", touch, false );
+			 a[80] = document.getElementById( "i8" );
+            a[80].addEventListener( "click", touch, false );
+			 a[81] = document.getElementById( "i9" );
+            a[81].addEventListener( "click", touch, false );
+			var AII =document.getElementById( "AI" );
+			AII.addEventListener("click",AItry,false);
+			var undo2 = document.getElementById( "undo1" );
+			undo2.addEventListener("click",undo,false);
+			} // end function start
+
+window.addEventListener( "load", start, false );
+   </script>
+   </head>
+   
+   
+   <body >
+      <body bgcolor="#007799">
+      <h1 align="center" style="color:#ffffbb;">Ultimate Tic Tac Toe-終極井字遊戲</h1>
+	  
+	   <ul class="rule">
+	   <h3 ><font style="background-color:#FFC8B4; color:#003377; size:">遊戲簡介</font></h3>
+	    <p style="color:white;">
+	  這個遊戲和一般的井字遊戲很像，據說這是數學家在野餐時想到的:&nbsp;)<br>
+	  一開始和普通的井字遊戲一樣，分成九格，但要在格子裡面再分成九格。<br>
+	    &nbsp;<br>
+	  1.(1)與朋友對戰:<br>
+	  &nbsp;&nbsp;&nbsp;兩個人輪流，第一個人可以任意點選一個小格子開始<br>
+	  &nbsp;&nbsp;&nbsp;從第二手開始，會根據前一位玩家下在哪個小格子，決定你必須下在哪個大格子<br>
+	  &nbsp;&nbsp;&nbsp;舉例：如果對手剛剛在「左上大格 Table #3」的「中間小格 Cell #5」下棋，<br>
+	  &nbsp;&nbsp;&nbsp;那你下一步就只能在「中間的大格 Table #5」裡選一個小格來下。<br>
+	  &nbsp;&nbsp;&nbsp;(2)與電腦對戰:<br>
+	  &nbsp;&nbsp;&nbsp; 由你先開始，接著換電腦先生(點Mr.Computer的按鈕)，規則同上<br>
+	  2.當你在一個大格子中有三小格連成一線的時候，你就贏得那個大格子<br>
+	  &nbsp;&nbsp;&nbsp;如果其中一人贏得任何一個大格子的話，另一個人就能填任意的小格子了<br>
+	  3.先贏得三個一直線的大格子的人為獲勝者<br>
+	  4.每一輪你有一次後悔的機會，點undo的按鈕可以重新做選擇<br>
+	  5.按鈕下方會有貼心小提示唷~格子編號如下↘<br>
+	   </p>
+       </ul>
+ 
+      <table border = "1"style="border:#FFD382 dashed;" align="center" class="table">
+         <caption></caption>
+            <tr>
+               <td>
+                  <table style="border:gray solid;"border = "1"> 
+				   <tr>
+              
+                     <td>
+                      <img src = "blank.png" id="a1"
+				       alt = "blank"> 
+				     </td>
+                     <td>
+                      <img src = "blank.png" id="a2"
+				       alt = "blank"> 
+				     </td>
+			         <td>
+                       <img src = "blank.png" id="a3"
+				        alt = "blank"> 
+				     </td>
+
+                   </tr>
+                   <tr>
+              
+                     <td>
+                      <img src = "blank.png" id="a4"
+				       alt = "blank"> 
+				     </td>
+                     <td>
+                      <img src = "blank.png" id="a5"
+				       alt = "blank"> 
+				     </td>
+			         <td>
+                       <img src = "blank.png" id="a6"
+				        alt = "blank"> 
+				     </td>
+
+                   </tr>
+                   <tr>
+              
+                     <td>
+                      <img src = "blank.png" id="a7"
+				       alt = "blank"> 
+				     </td>
+                     <td>
+                      <img src = "blank.png" id="a8"
+				       alt = "blank"> 
+				     </td>
+			         <td>
+                       <img src = "blank.png" id="a9"
+				        alt = "blank"> 
+				     </td>
+
+                   </tr>
+            </table>
+				  
+				  
+				  
+				  
+				  
+               </td>
+
+               
+              <td>
+                 <table style="border:gray solid;"border = "1"> 
+				   <tr>
+              
+                     <td>
+                      <img src = "blank.png" id="b1"
+				       alt = "blank"> 
+				     </td>
+                     <td>
+                      <img src = "blank.png" id="b2"
+				       alt = "blank"> 
+				     </td>
+			         <td>
+                       <img src = "blank.png" id="b3"
+				        alt = "blank"> 
+				     </td>
+
+                   </tr>
+                   <tr>
+              
+                     <td>
+                      <img src = "blank.png" id="b4"
+				       alt = "blank"> 
+				     </td>
+                     <td>
+                      <img src = "blank.png" id="b5"
+				       alt = "blank"> 
+				     </td>
+			         <td>
+                       <img src = "blank.png" id="b6"
+				        alt = "blank"> 
+				     </td>
+
+                   </tr>
+                   <tr>
+              
+                     <td>
+                      <img src = "blank.png" id="b7"
+				       alt = "blank"> 
+				     </td>
+                     <td>
+                      <img src = "blank.png" id="b8"
+				       alt = "blank"> 
+				     </td>
+			         <td>
+                       <img src = "blank.png" id="b9"
+				        alt = "blank"> 
+				     </td>
+
+                   </tr>
+            </table> 
+               </td>
+			   <td>
+                  <table style="border:gray solid;"border = "1"> 
+				   <tr>
+              
+                     <td>
+                      <img src = "blank.png" id="c1"
+				       alt = "blank"> 
+				     </td>
+                     <td>
+                      <img src = "blank.png" id="c2"
+				       alt = "blank"> 
+				     </td>
+			         <td>
+                       <img src = "blank.png" id="c3"
+				        alt = "blank"> 
+				     </td>
+
+                   </tr>
+                   <tr>
+              
+                     <td>
+                      <img src = "blank.png" id="c4"
+				       alt = "blank"> 
+				     </td>
+                     <td>
+                      <img src = "blank.png" id="c5"
+				       alt = "blank"> 
+				     </td>
+			         <td>
+                       <img src = "blank.png" id="c6"
+				        alt = "blank"> 
+				     </td>
+
+                   </tr>
+                   <tr>
+              
+                     <td>
+                      <img src = "blank.png" id="c7"
+				       alt = "blank"> 
+				     </td>
+                     <td>
+                      <img src = "blank.png" id="c8"
+				       alt = "blank"> 
+				     </td>
+			         <td>
+                       <img src = "blank.png" id="c9"
+				        alt = "blank"> 
+				     </td>
+
+                   </tr>
+            </table>
+               </td>
+
+            </tr>
+           <tr>
+              
+               <td>
+                  <table style="border:gray solid;"border = "1"> 
+				   <tr>
+              
+                     <td>
+                      <img src = "blank.png" id="d1"
+				       alt = "blank"> 
+				     </td>
+                     <td>
+                      <img src = "blank.png" id="d2"
+				       alt = "blank"> 
+				     </td>
+			         <td>
+                       <img src = "blank.png" id="d3"
+				        alt = "blank"> 
+				     </td>
+
+                   </tr>
+                   <tr>
+              
+                     <td>
+                      <img src = "blank.png" id="d4"
+				       alt = "blank"> 
+				     </td>
+                     <td>
+                      <img src = "blank.png" id="d5"
+				       alt = "blank"> 
+				     </td>
+			         <td>
+                       <img src = "blank.png" id="d6"
+				        alt = "blank"> 
+				     </td>
+
+                   </tr>
+                   <tr>
+              
+                     <td>
+                      <img src = "blank.png" id="d7"
+				       alt = "blank"> 
+				     </td>
+                     <td>
+                      <img src = "blank.png" id="d8"
+				       alt = "blank"> 
+				     </td>
+			         <td>
+                       <img src = "blank.png" id="d9"
+				        alt = "blank"> 
+				     </td>
+
+                   </tr>
+            </table>
+				  
+				  
+				  
+				  
+				  
+               </td>
+
+               
+              <td>
+                 <table style="border:gray solid;"border = "1"> 
+				   <tr>
+              
+                     <td>
+                      <img src = "blank.png" id="e1"
+				       alt = "blank"> 
+				     </td>
+                     <td>
+                      <img src = "blank.png" id="e2"
+				       alt = "blank"> 
+				     </td>
+			         <td>
+                       <img src = "blank.png" id="e3"
+				        alt = "blank"> 
+				     </td>
+
+                   </tr>
+                   <tr>
+              
+                     <td>
+                      <img src = "blank.png" id="e4"
+				       alt = "blank"> 
+				     </td>
+                     <td>
+                      <img src = "blank.png" id="e5"
+				       alt = "blank"> 
+				     </td>
+			         <td>
+                       <img src = "blank.png" id="e6"
+				        alt = "blank"> 
+				     </td>
+
+                   </tr>
+                   <tr>
+              
+                     <td>
+                      <img src = "blank.png" id="e7"
+				       alt = "blank"> 
+				     </td>
+                     <td>
+                      <img src = "blank.png" id="e8"
+				       alt = "blank"> 
+				     </td>
+			         <td>
+                       <img src = "blank.png" id="e9"
+				        alt = "blank"> 
+				     </td>
+
+                   </tr>
+            </table> 
+               </td>
+			   <td>
+                  <table style="border:gray solid;"border = "1"> 
+				   <tr>
+              
+                     <td>
+                      <img src = "blank.png" id="f1"
+				       alt = "blank"> 
+				     </td>
+                     <td>
+                      <img src = "blank.png" id="f2"
+				       alt = "blank"> 
+				     </td>
+			         <td>
+                       <img src = "blank.png" id="f3"
+				        alt = "blank"> 
+				     </td>
+
+                   </tr>
+                   <tr>
+              
+                     <td>
+                      <img src = "blank.png" id="f4"
+				       alt = "blank"> 
+				     </td>
+                     <td>
+                      <img src = "blank.png" id="f5"
+				       alt = "blank"> 
+				     </td>
+			         <td>
+                       <img src = "blank.png" id="f6"
+				        alt = "blank"> 
+				     </td>
+
+                   </tr>
+                   <tr>
+              
+                     <td>
+                      <img src = "blank.png" id="f7"
+				       alt = "blank"> 
+				     </td>
+                     <td>
+                      <img src = "blank.png" id="f8"
+				       alt = "blank"> 
+				     </td>
+			         <td>
+                       <img src = "blank.png" id="f9"
+				        alt = "blank"> 
+				     </td>
+
+                   </tr>
+            </table>
+               </td>
+
+            </tr>
+           <tr>
+              
+               <td>
+                  <table style="border:gray solid;"border = "1"> 
+				   <tr>
+              
+                     <td>
+                      <img src = "blank.png" id="g1"
+				       alt = "blank"> 
+				     </td>
+                     <td>
+                      <img src = "blank.png" id="g2"
+				       alt = "blank"> 
+				     </td>
+			         <td>
+                       <img src = "blank.png" id="g3"
+				        alt = "blank"> 
+				     </td>
+
+                   </tr>
+                   <tr>
+              
+                     <td>
+                      <img src = "blank.png" id="g4"
+				       alt = "blank"> 
+				     </td>
+                     <td>
+                      <img src = "blank.png" id="g5"
+				       alt = "blank"> 
+				     </td>
+			         <td>
+                       <img src = "blank.png" id="g6"
+				        alt = "blank"> 
+				     </td>
+
+                   </tr>
+                   <tr>
+              
+                     <td>
+                      <img src = "blank.png" id="g7"
+				       alt = "blank"> 
+				     </td>
+                     <td>
+                      <img src = "blank.png" id="g8"
+				       alt = "blank"> 
+				     </td>
+			         <td>
+                       <img src = "blank.png" id="g9"
+				        alt = "blank"> 
+				     </td>
+
+                   </tr>
+            </table>
+				  
+				  
+				  
+				  
+				  
+               </td>
+
+               
+              <td>
+                 <table style="border:gray solid;"border = "1"> 
+				   <tr>
+              
+                     <td>
+                      <img src = "blank.png" id="h1"
+				       alt = "blank"> 
+				     </td>
+                     <td>
+                      <img src = "blank.png" id="h2"
+				       alt = "blank"> 
+				     </td>
+			         <td>
+                       <img src = "blank.png" id="h3"
+				        alt = "blank"> 
+				     </td>
+
+                   </tr>
+                   <tr>
+              
+                     <td>
+                      <img src = "blank.png" id="h4"
+				       alt = "blank"> 
+				     </td>
+                     <td>
+                      <img src = "blank.png" id="h5"
+				       alt = "blank"> 
+				     </td>
+			         <td>
+                       <img src = "blank.png" id="h6"
+				        alt = "blank"> 
+				     </td>
+
+                   </tr>
+                   <tr>
+              
+                     <td>
+                      <img src = "blank.png" id="h7"
+				       alt = "blank"> 
+				     </td>
+                     <td>
+                      <img src = "blank.png" id="h8"
+				       alt = "blank"> 
+				     </td>
+			         <td>
+                       <img src = "blank.png" id="h9"
+				        alt = "blank"> 
+				     </td>
+
+                   </tr>
+            </table> 
+               </td>
+			   <td>
+                  <table style="border:gray solid;"border = "1"> 
+				   <tr>
+              
+                     <td>
+                      <img src = "blank.png" id="i1"
+				       alt = "blank"> 
+				     </td>
+                     <td>
+                      <img src = "blank.png" id="i2"
+				       alt = "blank"> 
+				     </td>
+			         <td>
+                       <img src = "blank.png" id="i3"
+				        alt = "blank"> 
+				     </td>
+
+                   </tr>
+                   <tr>
+              
+                     <td>
+                      <img src = "blank.png" id="i4"
+				       alt = "blank"> 
+				     </td>
+                     <td>
+                      <img src = "blank.png" id="i5"
+				       alt = "blank"> 
+				     </td>
+			         <td>
+                       <img src = "blank.png" id="i6"
+				        alt = "blank"> 
+				     </td>
+
+                   </tr>
+                   <tr>
+              
+                     <td>
+                      <img src = "blank.png" id="i7"
+				       alt = "blank"> 
+				     </td>
+                     <td>
+                      <img src = "blank.png" id="i8"
+				       alt = "blank"> 
+				     </td>
+			         <td>
+                       <img src = "blank.png" id="i9"
+				        alt = "blank"> 
+				     </td>
+
+                   </tr>
+            </table>
+               </td>
+
+            </tr>
+            
+      </table>
+	 
+	  <div id="hint" class="hint" style="color:#ffc8b4;"> </div>
+	  <div class="button-area">
+  			<img src="AI.jpg" id="AI" alt="AI" class="btn-img">
+  			<img src="UD.jpg" id="undo1" alt="undo" class="btn-img">
+		</div>
+	  <img class="dino" src = "dino.jpg" alt = "dinosaur">
+   </body>
+</html>
+
+
