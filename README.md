@@ -40,5 +40,6 @@ Play directly in your browser — no installation needed.
 
 1. 將專案 clone 至本地：
    ```bash
-   git clone https://github.com/<honeycream0903>/WebGomoku.git
+   git clone https://github.com/honeycream0903/WebGomoku.git
+
 
