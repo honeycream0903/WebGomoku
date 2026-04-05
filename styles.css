@@ -1,0 +1,78 @@
+body {
+  background-color: #007799;
+}
+
+h1 {
+  color: #ffffbb;
+  text-align: center;
+}
+
+.rule {
+  position: absolute;
+  left: 615px;
+}
+
+.rule h3 {
+  background-color: #FFC8B4;
+  color: #003377;
+}
+
+.rule p {
+  color: white;
+}
+
+.table {
+  position: absolute;
+  top: 110px;
+  left: 100px;
+  bottom: 50px;
+  border: #FFD382 dashed;
+}
+
+.inner-table {
+  border: gray solid;
+}
+
+.hint {
+  position: absolute;
+  top: 700px;
+  left: 650px;
+  color: #ffc8b4;
+}
+
+.button-area {
+  position: absolute;
+  top: 550px;
+  left: 670px;
+  display: flex;
+  gap: 10px;
+}
+
+.button-area img {
+  width: 100px;
+  height: auto;
+  cursor: pointer;
+}
+
+.dino {
+  position: absolute;
+  top: 500px;
+  left: 1000px;
+  width: 170px;
+  height: auto;
+}
+
+img {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+}
+
+td {
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  text-align: center;
+  vertical-align: middle;
+  overflow: hidden;
+}
