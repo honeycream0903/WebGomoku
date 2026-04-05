@@ -9,6 +9,7 @@ for (var b = 0; b <= 81; b++) {
 var undoo = 0;
 var nowplay = 1;
 var lastT = 0;
+var prevLastT = 0;
 
 
 function touch(event) {
@@ -26,6 +27,7 @@ function touch(event) {
     line();
     bigline();
     nowplay = 2 - (nowplay + 1) % 2;
+    prevLastT = lastT;
     lastT = i;
     undoo = 1;
     document.getElementById("hint").innerHTML =
@@ -40,6 +42,7 @@ function touch(event) {
       line();
       bigline();
       nowplay = 2 - (nowplay + 1) % 2;
+      prevLastT = lastT;
       lastT = i;
       undoo = 1;
       document.getElementById("hint").innerHTML =
@@ -62,6 +65,7 @@ function touch(event) {
     line();
     bigline();
     nowplay = 2 - (nowplay + 1) % 2;
+    prevLastT = lastT;
     lastT = i;
     undoo = 1;
     document.getElementById("hint").innerHTML =
@@ -128,9 +132,10 @@ function bigline() {
 
 function undo() {
   if (undoo == 1) {
+    alreadyT[lastT] = 0;
     a[lastT].setAttribute("src", "blank.png");
     a[lastT].setAttribute("alt", "blank");
-    lastT = (lastT + 9 - lastT % 9) / 9;
+    lastT = prevLastT;
     undoo = 0;
     nowplay = 2 - (nowplay + 1) % 2;
   } else {
@@ -151,6 +156,7 @@ function AItry() {
       line();
       bigline();
       nowplay = 2 - (nowplay + 1) % 2;
+      prevLastT = lastT;
       lastT = nowAI;
       undoo = 1;
       var currentTable = Math.floor((lastT - 1) / 9) + 1;
@@ -168,6 +174,7 @@ function AItry() {
     line();
     bigline();
     nowplay = 2 - (nowplay + 1) % 2;
+    prevLastT = lastT;
     lastT = nowAI;
     undoo = 1;
     var currentTable = Math.floor((lastT - 1) / 9) + 1;
